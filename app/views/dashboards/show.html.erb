@@ -1,17 +1,62 @@
 <div class="container mt-5">
   <h2>Welcome to Your Dashboard, <%= current_user.business.business_name %></h2>
-  <div class="row">
-    <div class="col-md-4">
+
+  <!-- Reviews Snapshot -->
+  <div class="row mb-3">
+    <div class="col-md-12">
       <div class="card">
         <div class="card-header">
           Reviews Snapshot
         </div>
         <div class="card-body">
           <p>Total Reviews: <%= @reviews.count %></p>
-          <!-- Add more review summary details here -->
         </div>
       </div>
     </div>
-    <!-- Add other dashboard sections for campaigns, email templates, etc. -->
   </div>
-</div>
+
+  <!-- Campaigns Section -->
+  <div class="row mb-3">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">Campaigns</div>
+        <div class="card-body">
+          <p>Total Campaigns: <%= @campaigns.count %></p>
+          <%= link_to 'Create Campaign', new_business_campaign_path(@business), class: 'btn btn-success' %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Email Templates Section -->
+  <div class="row mb-3">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">Email Templates</div>
+        <div class="card-body">
+          <p>Total Email Templates: <%= @email_templates.count %></p>
+          <%= link_to 'Create Email Template', new_business_emailtemplate_path(@business), class: 'btn btn-success' %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Review Analytics Section -->
+  <div class="row mt-5">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">Review Analytics</div>
+        <div class="card-body">
+          <h5 class="badge bg-primary">Reviews in Last 30 Days: <span><%= @reviews_last_30_days_count %></span></h5>
+          <% @reviews_by_month.to_a.last(6).sort.each do |month, count| %>
+            <div class="mb-3">
+              <strong><%= month %>:</strong>
+              <div class="progress">
+                <div class="progress-bar bg-success" role="progressbar" style="width: <%= count.to_f / @reviews_by_month.values.max * 100 %>%;" aria-valuenow="<%= count %>" aria-valuemin="0" aria-valuemax="<%= @reviews_by_month.values.max %>"><%= count %></div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
