@@ -10,7 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_02_17_000638) do
+ActiveRecord::Schema[7.0].define(version: 2024_02_17_013949) do
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "businesses", force: :cascade do |t|
     t.string "email"
     t.string "business_name"
@@ -23,7 +26,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_17_000638) do
   create_table "campaigns", force: :cascade do |t|
     t.time "delaytime"
     t.string "name"
-    t.integer "business_id", null: false
+    t.bigint "business_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["business_id"], name: "index_campaigns_on_business_id"
@@ -32,7 +35,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_17_000638) do
   create_table "emailtemplates", force: :cascade do |t|
     t.text "content"
     t.string "subjectline"
-    t.integer "business_id", null: false
+    t.bigint "business_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["business_id"], name: "index_emailtemplates_on_business_id"
@@ -43,21 +46,25 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_17_000638) do
     t.integer "rating"
     t.text "content"
     t.boolean "responded"
-    t.integer "business_id", null: false
+    t.bigint "business_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["business_id"], name: "index_reviews_on_business_id"
   end
 
   create_table "users", force: :cascade do |t|
-    t.integer "business_id", null: false
+    t.string "email", default: "", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["business_id"], name: "index_users_on_business_id"
+    t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
   add_foreign_key "campaigns", "businesses"
   add_foreign_key "emailtemplates", "businesses"
   add_foreign_key "reviews", "businesses"
-  add_foreign_key "users", "businesses"
 end

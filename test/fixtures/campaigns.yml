@@ -1,11 +1,11 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  delaytime: 2024-02-17 11:05:53
+  delaytime: 2024-02-17 12:39:27
   name: MyString
   business: one
 
 two:
-  delaytime: 2024-02-17 11:05:53
+  delaytime: 2024-02-17 12:39:27
   name: MyString
   business: two
