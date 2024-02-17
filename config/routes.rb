@@ -1,8 +1,11 @@
 Rails.application.routes.draw do
-  devise_for :users
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+  root to: 'dashboards#show'
+  # In config/routes.rb
+  devise_for :users, controllers: {
+    registrations: 'users/registrations'
+  }
 
-  # Defines the root path route ("/")
+
   # root "articles#index"
   resources :businesses do
     resources :reviews
