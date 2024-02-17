@@ -8,4 +8,6 @@ Rails.application.routes.draw do
     resources :emailtemplates
     resources :campaigns
   end
+
+  resources :notifications
 end
