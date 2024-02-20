@@ -35,6 +35,10 @@ gem "devise"
 
 gem 'groupdate'
 
+gem 'chartkick'
+
+gem 'google-business-reviews'
+
 
 # Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
 # gem "kredis"
