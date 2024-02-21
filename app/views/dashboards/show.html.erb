@@ -43,20 +43,40 @@
 
   <!-- Review Analytics Section -->
   <div class="row mt-5">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-header">Review Analytics</div>
+      <div class="card-body">
+        <h5 class="badge bg-primary">Reviews in Last 30 Days: <span><%= @reviews_last_30_days_count %></span></h5>
+        <%= line_chart @reviews_by_month, height: "500px" %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Google Business Reviews Section -->
+  <div class="row mt-5">
     <div class="col-md-12">
       <div class="card">
-        <div class="card-header">Review Analytics</div>
-        <div class="card-body">
-          <h5 class="badge bg-primary">Reviews in Last 30 Days: <span><%= @reviews_last_30_days_count %></span></h5>
-          <% @reviews_by_month.to_a.last(6).sort.each do |month, count| %>
-            <div class="mb-3">
-              <strong><%= month %>:</strong>
-              <div class="progress">
-                <div class="progress-bar bg-success" role="progressbar" style="width: <%= count.to_f / @reviews_by_month.values.max * 100 %>%;" aria-valuenow="<%= count %>" aria-valuemin="0" aria-valuemax="<%= @reviews_by_month.values.max %>"><%= count %></div>
-              </div>
-            </div>
-          <% end %>
+        <div class="card-header">
+          Google Business Reviews
         </div>
+        <ul class="list-group list-group-flush">
+          <% if @google_reviews.present? %>
+            <% @google_reviews.each do |review| %>
+              <li class="list-group-item">
+                <h5 class="card-title">Review by: <%= review["author_name"] %></h5>
+                <h6 class="card-subtitle mb-2 text-muted">Rating: <%= review["rating"] %> / 5</h6>
+                <p class="card-text"><%= review["text"] %></p>
+                <footer class="blockquote-footer">
+                  Reviewed on <%= Time.at(review["time"]).strftime("%B %d, %Y") %>
+                </footer>
+              </li>
+            <% end %>
+          <% else %>
+            <li class="list-group-item">No reviews found.</li>
+          <% end %>
+        </ul>
       </div>
     </div>
   </div>
