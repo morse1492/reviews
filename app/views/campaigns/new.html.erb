@@ -1,0 +1,9 @@
+<h1>Create a campaign</h1>
+
+<%= simple_form_for [@business, @campaign] do |f| %>
+  <%= f.input :name %>
+  <%= f.input :delaytime %>
+  <%= f.submit "Submit campaign", class: "btn btn-primary" %>
+<% end %>
+<%= link_to 'Create new template',  business_emailtemplates_path, class: "btn btn-primary" %>
+<%= link_to 'Back',  business_campaigns_path %>

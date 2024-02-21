@@ -10,6 +10,8 @@ class CampaignsController < ApplicationController
   end
 
   def new
+    @business = Business.find(params[:business_id])
+    @campaigns = current_user.business.campaigns
     @campaign = current_user.business.campaigns.build
   end
 

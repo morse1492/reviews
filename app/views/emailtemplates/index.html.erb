@@ -1,0 +1,16 @@
+<h1>Review request email setup</h1>
+
+
+<p>General</p>
+<%= simple_form_for @emailtemplate do |form| %>
+  <%= form.input :name %>
+  <%= form.input :description %>
+  <%= form.input :start_date, as: :date_picker %>
+  <%= form.input :end_date, as: :date_picker %>
+
+  <!-- Add a dropdown/select box -->
+  <%= form.input :category, collection: ['Category 1', 'Category 2', 'Category 3'], prompt: 'Select Category' %>
+
+  <!-- Add a button -->
+  <%= form.button :submit, class: 'btn btn-primary' %>
+<% end %>
