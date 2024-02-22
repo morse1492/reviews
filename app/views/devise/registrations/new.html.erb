@@ -23,6 +23,10 @@
               <div class="mb-3">
                 <%= b.input :contact_info, input_html: { class: 'form-control' }, wrapper_html: { class: 'form-group' } %>
               </div>
+              <!-- Google Places ID Field -->
+              <div class="mb-3">
+                <%= b.input :google_place_id, label: 'Google Places ID', required: false, input_html: { class: 'form-control' }, wrapper_html: { class: 'form-group' } %>
+              </div>
             <% end %>
 
             <div class="form-actions">

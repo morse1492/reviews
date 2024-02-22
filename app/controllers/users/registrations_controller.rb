@@ -1,4 +1,6 @@
 class Users::RegistrationsController < Devise::RegistrationsController
+  before_action :configure_permitted_parameters
+
   def new
     super do |resource|
       resource.build_business # Prepares a new business for the form
@@ -16,8 +18,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   private
 
-  def sign_up_params
-    # Ensure you permit business attributes for creation
-    params.require(:user).permit(:email, :password, :password_confirmation, business_attributes: [:business_name, :contact_info])
+  def configure_permitted_parameters
+    devise_parameter_sanitizer.permit(:sign_up, keys: [business_attributes: [:business_name, :contact_info, :email, :google_place_id]])
   end
 end

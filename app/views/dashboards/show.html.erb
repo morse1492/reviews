@@ -1,6 +1,70 @@
 <div class="container mt-5">
   <h2>Welcome to Your Dashboard, <%= current_user.business.business_name %></h2>
 
+<!-- Snapshot Section -->
+<div class="row mt-5">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-header">
+        Reviews Snapshot
+      </div>
+      <div class="card-body text-center">
+        <img src="https://www.google.com/favicon.ico" alt="Google logo" class="mb-2">
+        <h5>Average Rating</h5>
+        <% if @average_rating %>
+          <div class="font-weight-bold h2">
+          <p>
+            <%= @average_rating %> / 5
+            <br>
+          </div>
+            Based on <%= @google_reviews.size %> reviews
+          </p>
+        <% else %>
+          <p>No ratings available</p>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  <!-- Google Business Reviews Section -->
+<div class="row mt-5">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-header">
+        Google Business Reviews
+      </div>
+      <ul class="list-group list-group-flush">
+        <% if @google_reviews.present? %>
+          <% @google_reviews.each do |review| %>
+            <li class="list-group-item">
+              <h5 class="card-title">Review by: <%= review["author_name"] %></h5>
+              <h6 class="card-subtitle mb-2 text-muted">
+                <!-- Star Icons for Rating -->
+                <% 5.times do |i| %>
+                  <% if i < review["rating"].to_i %>
+                    <i class="fas fa-star text-warning"></i>
+                  <% else %>
+                    <i class="far fa-star text-warning"></i>
+                  <% end %>
+                <% end %>
+                <%= review["rating"] %> / 5
+              </h6>
+              <p class="card-text"><%= review["text"] %></p>
+              <footer class="blockquote-footer">
+                Reviewed on <%= Time.at(review["time"]).strftime("%B %d, %Y") %>
+              </footer>
+            </li>
+          <% end %>
+        <% else %>
+          <li class="list-group-item">No reviews found.</li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+</div>
+
   <!-- Reviews Snapshot -->
   <div class="row mb-3">
     <div class="col-md-12">
@@ -53,30 +117,3 @@
     </div>
   </div>
 </div>
-
-<!-- Google Business Reviews Section -->
-  <div class="row mt-5">
-    <div class="col-md-12">
-      <div class="card">
-        <div class="card-header">
-          Google Business Reviews
-        </div>
-        <ul class="list-group list-group-flush">
-          <% if @google_reviews.present? %>
-            <% @google_reviews.each do |review| %>
-              <li class="list-group-item">
-                <h5 class="card-title">Review by: <%= review["author_name"] %></h5>
-                <h6 class="card-subtitle mb-2 text-muted">Rating: <%= review["rating"] %> / 5</h6>
-                <p class="card-text"><%= review["text"] %></p>
-                <footer class="blockquote-footer">
-                  Reviewed on <%= Time.at(review["time"]).strftime("%B %d, %Y") %>
-                </footer>
-              </li>
-            <% end %>
-          <% else %>
-            <li class="list-group-item">No reviews found.</li>
-          <% end %>
-        </ul>
-      </div>
-    </div>
-  </div>

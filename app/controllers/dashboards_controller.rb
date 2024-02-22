@@ -20,6 +20,9 @@ class DashboardsController < ApplicationController
     # Fetch Google Business reviews using the Google Places API
     google_api_key = ENV['GOOGLE_API_KEY'] # Use the environment variable for the API key
     @google_reviews = fetch_google_reviews(google_api_key, @business.google_place_id) if @business.google_place_id
+
+    # Calculate the average rating
+    calculate_average_rating
   end
 
   private
@@ -41,5 +44,14 @@ class DashboardsController < ApplicationController
     end
 
     []
+  end
+
+  def calculate_average_rating
+    if @google_reviews.present? && @google_reviews.any? { |review| review["rating"].present? }
+      total_rating = @google_reviews.sum { |review| review["rating"].to_f }
+      @average_rating = (total_rating / @google_reviews.size).round(2)
+    else
+      @average_rating = nil
+    end
   end
 end
