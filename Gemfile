@@ -39,6 +39,7 @@ gem 'chartkick'
 
 gem 'google-business-reviews'
 
+gem 'dotenv-rails'
 
 # Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
 # gem "kredis"
