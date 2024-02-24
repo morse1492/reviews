@@ -1,0 +1,7 @@
+<h1>Create a campaign</h1>
+
+<%= simple_form_for [@business, @campaign] do |f| %>
+  <%= f.input :name %>
+  <%= link_to "Create new template", new_business_emailtemplate_path, class: "btn btn-primary"%>
+  <%= f.submit "Submit campaign", class: "btn btn-primary" %>
+<% end %>
