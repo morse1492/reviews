@@ -1,0 +1,13 @@
+<h1>Create a campaign</h1>
+
+<div>
+<div>
+<h2>Choose a review request template</h2>
+
+</div>
+<%= link_to "Create New Template", business_campaigns_path %>
+</div>
+<%= simple_form_for [@business, @campaign] do |f| %>
+  <%= f.input :name %>
+  <%= f.submit "Submit review", class: "btn btn-primary" %>
+<% end %>

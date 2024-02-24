@@ -46,14 +46,14 @@ class DashboardsController < ApplicationController
     []
   end
 
-  # def calculate_average_rating
-  #   if @google_reviews.present? && @google_reviews.any? { |review| review["rating"].present? }
-  #     total_rating = @google_reviews.sum { |review| review["rating"].to_f }
-  #     @average_rating = (total_rating / @google_reviews.size).round(2)
-  #   else
-  #     @average_rating = nil
-  #   end
-  # end
+  def calculate_average_rating
+    if @google_reviews.present? && @google_reviews.any? { |review| review["rating"].present? }
+      total_rating = @google_reviews.sum { |review| review["rating"].to_f }
+      @average_rating = (total_rating / @google_reviews.size).round(2)
+    else
+      @average_rating = nil
+    end
+  end
 
   def fetch_yelp_reviews(yelp_business_id)
     yelp_api_key = ENV['YELP_API_KEY'] # Ensure you have this set in your env
