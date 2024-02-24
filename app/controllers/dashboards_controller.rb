@@ -21,11 +21,29 @@ class DashboardsController < ApplicationController
     google_api_key = ENV['GOOGLE_API_KEY'] # Use the environment variable for the API key
     @google_reviews = fetch_google_reviews(google_api_key, @business.google_place_id) if @business.google_place_id
 
-    # Calculate the average rating
+    # Calculate the average rating for Google Reviews
     calculate_average_rating
+
+    # Fetch Yelp reviews
+    yelp_api_key = ENV['YELP_API_KEY'] # Use the environment variable for the Yelp API key
+    @yelp_reviews = fetch_yelp_reviews(yelp_api_key, @business.yelp_business_id) if @business.yelp_business_id
+
+    # Calculate the average rating for Yelp reviews
+    calculate_yelp_average_rating
+
+    # Prepare data for Chartkick
+    @yelp_reviews_by_month = calculate_reviews_by_month(@yelp_reviews)
+
+    # Set up the data for Chartkick
+    @reviews_chart_data = {
+      "Yelp Reviews" => @yelp_reviews_by_month
+    }
+
   end
 
   private
+
+  # Google Reviews
 
   def fetch_google_reviews(api_key, place_id)
     base_uri = "https://maps.googleapis.com/maps/api/place/details/json"
@@ -46,35 +64,54 @@ class DashboardsController < ApplicationController
     []
   end
 
-  # def calculate_average_rating
-  #   if @google_reviews.present? && @google_reviews.any? { |review| review["rating"].present? }
-  #     total_rating = @google_reviews.sum { |review| review["rating"].to_f }
-  #     @average_rating = (total_rating / @google_reviews.size).round(2)
-  #   else
-  #     @average_rating = nil
-  #   end
-  # end
+  def calculate_average_rating
+    if @google_reviews.present? && @google_reviews.any? { |review| review["rating"].present? }
+      total_rating = @google_reviews.sum { |review| review["rating"].to_f }
+      @average_rating = (total_rating / @google_reviews.size).round(2)
+    else
+      @average_rating = nil
+    end
+  end
 
-  def fetch_yelp_reviews(yelp_business_id)
-    yelp_api_key = ENV['YELP_API_KEY'] # Ensure you have this set in your env
-    uri = URI("https://api.yelp.com/v3/businesses/#{yelp_business_id}/reviews")
+  # Yelp Reviews
 
+  def fetch_yelp_reviews(api_key, business_id)
+    uri = URI("https://api.yelp.com/v3/businesses/#{business_id}/reviews")
     request = Net::HTTP::Get.new(uri)
-    request["Authorization"] = "Bearer #{yelp_api_key}"
+    request["Authorization"] = "Bearer #{api_key}"
 
-    response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: uri.scheme == 'https') do |http|
+    response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: uri.scheme == "https") do |http|
       http.request(request)
     end
 
     if response.is_a?(Net::HTTPSuccess)
       body = JSON.parse(response.body)
-      body["reviews"] # Returns the reviews part of the response
+      return body["reviews"] if body && body["reviews"]
     else
-      Rails.logger.error "Failed to fetch Yelp reviews: #{response.message}"
-      []
+      Rails.logger.error "Error fetching Yelp reviews: #{response.message}"
     end
-  rescue => e
-    Rails.logger.error "Error fetching Yelp reviews: #{e.message}"
+
     []
   end
+
+
+  def calculate_yelp_average_rating
+    if @yelp_reviews.present? && @yelp_reviews.any? { |review| review["rating"].present? }
+      total_yelp_rating = @yelp_reviews.sum { |review| review["rating"].to_f }
+      @yelp_average_rating = (total_yelp_rating / @yelp_reviews.size).round(2)
+    else
+      @yelp_average_rating = nil
+    end
+  end
+
+  # Prepare data for Chartkick
+
+  def calculate_reviews_by_month(reviews)
+    @reviews.each_with_object({}) do |review, agg|
+      timestamp = review["time_created"]
+      rating = review["rating"].to_f
+      agg[timestamp] = rating
+    end
+  end
+
 end

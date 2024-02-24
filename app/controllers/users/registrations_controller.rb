@@ -19,6 +19,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
   private
 
   def configure_permitted_parameters
-    devise_parameter_sanitizer.permit(:sign_up, keys: [business_attributes: [:business_name, :contact_info, :email, :google_place_id]])
+    devise_parameter_sanitizer.permit(:sign_up, keys: [business_attributes: [:business_name, :contact_info, :email, :google_place_id, :yelp_business_id]])
   end
 end
