@@ -46,12 +46,35 @@ class DashboardsController < ApplicationController
     []
   end
 
-  def calculate_average_rating
-    if @google_reviews.present? && @google_reviews.any? { |review| review["rating"].present? }
-      total_rating = @google_reviews.sum { |review| review["rating"].to_f }
-      @average_rating = (total_rating / @google_reviews.size).round(2)
-    else
-      @average_rating = nil
+  # def calculate_average_rating
+  #   if @google_reviews.present? && @google_reviews.any? { |review| review["rating"].present? }
+  #     total_rating = @google_reviews.sum { |review| review["rating"].to_f }
+  #     @average_rating = (total_rating / @google_reviews.size).round(2)
+  #   else
+  #     @average_rating = nil
+  #   end
+  # end
+
+  def fetch_yelp_reviews(yelp_business_id)
+    yelp_api_key = ENV['YELP_API_KEY'] # Ensure you have this set in your env
+    uri = URI("https://api.yelp.com/v3/businesses/#{yelp_business_id}/reviews")
+
+    request = Net::HTTP::Get.new(uri)
+    request["Authorization"] = "Bearer #{yelp_api_key}"
+
+    response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: uri.scheme == 'https') do |http|
+      http.request(request)
     end
+
+    if response.is_a?(Net::HTTPSuccess)
+      body = JSON.parse(response.body)
+      body["reviews"] # Returns the reviews part of the response
+    else
+      Rails.logger.error "Failed to fetch Yelp reviews: #{response.message}"
+      []
+    end
+  rescue => e
+    Rails.logger.error "Error fetching Yelp reviews: #{e.message}"
+    []
   end
 end
