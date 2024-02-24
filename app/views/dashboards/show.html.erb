@@ -48,9 +48,21 @@
     </div>
   </div>
 
+  <!-- Review Analytics Section -->
+   <div class="row mt-5 mb-3">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header">Review Ratings Over Time</div>
+      <div class="card-body">
+        <%= line_chart @reviews_chart_data, ytitle: "Rating", xtitle: "Time Created", library: { animation: { duration: 1000, easing: 'easeOutQuad' } } %>
+      </div>
+    </div>
+  </div>
+</div>
+
 
   <!-- Google Business Reviews Section -->
-<div class="row mt-5">
+<div class="row mt-5 mb-3">
   <div class="col-md-12">
     <div class="card">
       <div class="card-header">
@@ -87,7 +99,7 @@
 </div>
 
  <!-- Yelp Business Reviews Section -->
-  <div class="row mt-5">
+  <div class="row mt-5 mb-3">
     <div class="col-md-12">
       <div class="card">
         <div class="card-header">
@@ -148,16 +160,3 @@
       </div>
     </div>
   </div>
-
-  <!-- Review Analytics Section -->
-  <div class="row mt-5">
-  <div class="col-md-12">
-    <div class="card">
-      <div class="card-header">Review Analytics</div>
-      <div class="card-body">
-        <h5 class="badge bg-primary">Reviews in Last 30 Days: <span><%= @reviews_last_30_days_count %></span></h5>
-        <%= line_chart @reviews_by_month, height: "500px" %>
-      </div>
-    </div>
-  </div>
-</div>
