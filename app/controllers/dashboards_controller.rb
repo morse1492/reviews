@@ -31,6 +31,14 @@ class DashboardsController < ApplicationController
     # Calculate the average rating for Yelp reviews
     calculate_yelp_average_rating
 
+    # Prepare data for Chartkick
+    @yelp_reviews_by_month = calculate_reviews_by_month(@yelp_reviews)
+
+    # Set up the data for Chartkick
+    @reviews_chart_data = {
+      "Yelp Reviews" => @yelp_reviews_by_month
+    }
+
   end
 
   private
@@ -93,6 +101,16 @@ class DashboardsController < ApplicationController
       @yelp_average_rating = (total_yelp_rating / @yelp_reviews.size).round(2)
     else
       @yelp_average_rating = nil
+    end
+  end
+
+  # Prepare data for Chartkick
+
+  def calculate_reviews_by_month(reviews)
+    reviews.each_with_object({}) do |review, agg|
+      timestamp = review["time_created"]
+      rating = review["rating"].to_f
+      agg[timestamp] = rating
     end
   end
 
