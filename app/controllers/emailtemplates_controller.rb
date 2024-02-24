@@ -10,13 +10,14 @@ class EmailtemplatesController < ApplicationController
   end
 
   def new
+    @business = Business.find(params[:business_id])
     @emailtemplate = current_user.business.emailtemplates.build
   end
 
   def create
     @emailtemplate = current_user.business.emailtemplates.build(emailtemplate_params)
     if @emailtemplate.save
-      redirect_to emailtemplates_path, notice: 'Email template created successfully.'
+      redirect_to root_path, notice: 'Email template created successfully.'
     else
       render :new
     end
@@ -27,7 +28,7 @@ class EmailtemplatesController < ApplicationController
 
   def update
     if @emailtemplate.update(emailtemplate_params)
-      redirect_to emailtemplates_path, notice: 'Email template updated successfully.'
+      redirect_to business_emailtemplates_path, notice: 'Email template updated successfully.'
     else
       render :edit
     end
@@ -37,5 +38,9 @@ class EmailtemplatesController < ApplicationController
 
   def set_emailtemplate
     @emailtemplate = current_user.business.emailtemplates.find(params[:id])
+  end
+
+  def emailtemplate_params
+    params.require(:emailtemplate).permit(:content, :subjectline)
   end
 end
