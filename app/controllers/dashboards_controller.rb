@@ -35,9 +35,9 @@ class DashboardsController < ApplicationController
     @yelp_reviews_by_month = calculate_reviews_by_month(@yelp_reviews)
 
     # Set up the data for Chartkick
-    @reviews_chart_data = {
-      "Yelp Reviews" => @yelp_reviews_by_month
-    }
+    # @reviews_chart_data = {
+    #   "Yelp Reviews" => @yelp_reviews_by_month
+    # }
 
   end
 
@@ -107,11 +107,17 @@ class DashboardsController < ApplicationController
   # Prepare data for Chartkick
 
   def calculate_reviews_by_month(reviews)
-    reviews.each_with_object({}) do |review, agg|
-      timestamp = review["time_created"]
-      rating = review["rating"].to_f
-      agg[timestamp] = rating
+    reviews_by_month = reviews.group_by { |review| review["time_created"].to_date.beginning_of_month }
+    reviews_count_by_month = reviews_by_month.transform_values(&:count)
+
+    sorted_reviews_count = reviews_count_by_month.sort.to_h
+
+    cumulative_reviews_count = 0
+    cumulative_reviews_data = sorted_reviews_count.transform_values do |reviews_count|
+      cumulative_reviews_count += reviews_count
     end
   end
+
+
 
 end

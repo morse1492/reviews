@@ -36,7 +36,7 @@
           <h5>Average Yelp Rating</h5>
           <% if @yelp_average_rating %>
             <div class="font-weight-bold">
-              <%= @yelp_average_rating %> / 5
+              <strong><%= @yelp_average_rating %> / 5</strong>
               <br>
               Based on <%= @yelp_reviews.size %> reviews
             </div>
@@ -49,16 +49,16 @@
   </div>
 
   <!-- Review Analytics Section -->
-   <div class="row mt-5 mb-3">
-  <div class="col-12">
-    <div class="card">
-      <div class="card-header">Review Ratings Over Time</div>
-      <div class="card-body">
-        <%= line_chart @reviews_chart_data, ytitle: "Rating", xtitle: "Time Created", library: { animation: { duration: 1000, easing: 'easeOutQuad' } } %>
+  <div class="row mt-5 mb-3">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">Reviews Over Time</div>
+        <div class="card-body">
+          <%= line_chart @yelp_reviews_by_month, ytitle: "Rating", xtitle: "Month", library: { animation: { duration: 1000, easing: 'easeOutQuad' } } %>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
 
   <!-- Google Business Reviews Section -->
