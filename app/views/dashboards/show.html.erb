@@ -16,6 +16,20 @@
             <div class="font-weight-bold">
               <%= @average_rating %> / 5
               <br>
+              <% stars = (@average_rating * 2).round / 2.0 %> <!-- Round to nearest half-star -->
+              <% full_stars = stars.floor %>
+              <% half_star = (stars - full_stars).zero? ? nil : 1 %>
+              <% empty_stars = 5 - full_stars - half_star %>
+              <% full_stars.times do %>
+                <i class="fas fa-star text-warning"></i>
+              <% end %>
+              <% if half_star %>
+                <i class="fas fa-star-half-alt text-warning"></i>
+              <% end %>
+              <% empty_stars.times do %>
+                <i class="far fa-star text-warning"></i>
+              <% end %>
+              <br>
               Based on <%= @google_reviews.size %> reviews
             </div>
           <% else %>
@@ -37,6 +51,20 @@
           <% if @yelp_average_rating %>
             <div class="font-weight-bold">
               <strong><%= @yelp_average_rating %> / 5</strong>
+              <br>
+              <% stars = (@yelp_average_rating * 2).round / 2.0 %> <!-- Round to nearest half-star -->
+              <% full_stars = stars.floor %>
+              <% half_star = (stars - full_stars).zero? ? nil : 1 %>
+              <% empty_stars = 5 - full_stars - half_star %>
+              <% full_stars.times do %>
+                <i class="fas fa-star text-warning"></i>
+              <% end %>
+              <% if half_star %>
+                <i class="fas fa-star-half-alt text-warning"></i>
+              <% end %>
+              <% empty_stars.times do %>
+                <i class="far fa-star text-warning"></i>
+              <% end %>
               <br>
               Based on <%= @yelp_reviews.size %> reviews
             </div>
@@ -60,45 +88,44 @@
     </div>
   </div>
 
-
   <!-- Google Business Reviews Section -->
-<div class="row mt-5 mb-3">
-  <div class="col-md-12">
-    <div class="card">
-      <div class="card-header">
-        Google Business Reviews
-      </div>
-      <ul class="list-group list-group-flush">
-        <% if @google_reviews.present? %>
-          <% @google_reviews.each do |review| %>
-            <li class="list-group-item">
-              <h5 class="card-title">Review by: <%= review["author_name"] %></h5>
-              <h6 class="card-subtitle mb-2 text-muted">
-                <!-- Star Icons for Rating -->
-                <% 5.times do |i| %>
-                  <% if i < review["rating"].to_i %>
-                    <i class="fas fa-star text-warning"></i>
-                  <% else %>
-                    <i class="far fa-star text-warning"></i>
+  <div class="row mt-5 mb-3">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          Google Business Reviews
+        </div>
+        <ul class="list-group list-group-flush">
+          <% if @google_reviews.present? %>
+            <% @google_reviews.each do |review| %>
+              <li class="list-group-item">
+                <h5 class="card-title">Review by: <%= review["author_name"] %></h5>
+                <h6 class="card-subtitle mb-2 text-muted">
+                  <!-- Star Icons for Rating -->
+                  <% 5.times do |i| %>
+                    <% if i < review["rating"].to_i %>
+                      <i class="fas fa-star text-warning"></i>
+                    <% else %>
+                      <i class="far fa-star text-warning"></i>
+                    <% end %>
                   <% end %>
-                <% end %>
-                <%= review["rating"] %> / 5
-              </h6>
-              <p class="card-text"><%= review["text"] %></p>
-              <footer class="blockquote-footer">
-                Reviewed on <%= Time.at(review["time"]).strftime("%B %d, %Y") %>
-              </footer>
-            </li>
+                  <%= review["rating"] %> / 5
+                </h6>
+                <p class="card-text"><%= review["text"] %></p>
+                <footer class="blockquote-footer">
+                  Reviewed on <%= Time.at(review["time"]).strftime("%B %d, %Y") %>
+                </footer>
+              </li>
+            <% end %>
+          <% else %>
+            <li class="list-group-item">No reviews found.</li>
           <% end %>
-        <% else %>
-          <li class="list-group-item">No reviews found.</li>
-        <% end %>
-      </ul>
+        </ul>
+      </div>
     </div>
   </div>
-</div>
 
- <!-- Yelp Business Reviews Section -->
+  <!-- Yelp Business Reviews Section -->
   <div class="row mt-5 mb-3">
     <div class="col-md-12">
       <div class="card">
@@ -160,3 +187,4 @@
       </div>
     </div>
   </div>
+</div>
