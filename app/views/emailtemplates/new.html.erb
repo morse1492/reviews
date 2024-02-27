@@ -1,13 +1,10 @@
 <h1>Create new template</h1>
 
 <%= simple_form_for [@business, @emailtemplate] do |f| %>
-  <%= f.input :subjectline %>
-
-   <!-- Heading Section -->
-  <%= f.input :content, label: "Heading" %>
+  <%= f.input :subjectline, label: "Heading", placeholder: 'Your feedback improves our service' %>
 
   <!-- Message Section -->
-  <%= f.input :content, label: "Message", as: :text, input_html: { rows: 5 } %>
+  <%= f.input :content, label: "Message", placeholder: "Thank you for choosing us, Would you kindly take a moment to review us?", as: :text, input_html: { rows: 5 } %>
 
   <%= f.submit "Submit Template", class: "btn btn-primary" %>
 <% end %>
