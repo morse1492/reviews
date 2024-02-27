@@ -10,13 +10,14 @@ class CampaignsController < ApplicationController
   end
 
   def new
+    @business = Business.find(params[:business_id])
     @campaign = current_user.business.campaigns.build
   end
 
   def create
     @campaign = current_user.business.campaigns.build(campaign_params)
     if @campaign.save
-      redirect_to campaigns_path, notice: 'Campaign created successfully.'
+      redirect_to root_path, notice: 'Campaign created successfully.'
     else
       render :new
     end
