@@ -107,6 +107,7 @@ class DashboardsController < ApplicationController
   # Prepare data for Chartkick
 
   def calculate_reviews_by_month(reviews)
+
     reviews_by_month = reviews.group_by { |review| review["time_created"].to_date.beginning_of_month }
     reviews_count_by_month = reviews_by_month.transform_values(&:count)
 
