@@ -16,18 +16,26 @@
             <div class="font-weight-bold">
               <%= @average_rating %> / 5
               <br>
-              <% stars = (@average_rating * 2).round / 2.0 %> <!-- Round to nearest half-star -->
-              <% full_stars = stars.floor %>
-              <% half_star = (stars - full_stars).zero? ? nil : 1 %>
-              <% empty_stars = 5 - full_stars - half_star %>
-              <% full_stars.times do %>
-                <i class="fas fa-star text-warning"></i>
+              <% if @average_rating %>
+              <% stars = (@average_rating * 2).round / 2.0 rescue nil %> <!-- Round to nearest half-star -->
+              <% if stars %>
+                <% full_stars = stars.floor %>
+                <% half_star = (stars - full_stars).zero? ? nil : 1 %>
+                <% empty_stars = 5 - full_stars - (half_star || 0) %>
+                <% full_stars.times do %>
+                  <i class="fas fa-star text-warning"></i>
+                <% end %>
+                <% if half_star %>
+                  <i class="fas fa-star-half-alt text-warning"></i>
+                <% end %>
+                <% empty_stars.times do %>
+                  <i class="far fa-star text-warning"></i>
+                <% end %>
+              <% else %>
+                <p>No ratings available</p>
               <% end %>
-              <% if half_star %>
-                <i class="fas fa-star-half-alt text-warning"></i>
-              <% end %>
-              <% empty_stars.times do %>
-                <i class="far fa-star text-warning"></i>
+              <% else %>
+                <p>No ratings available</p>
               <% end %>
               <br>
               Based on <%= @google_reviews.size %> reviews
