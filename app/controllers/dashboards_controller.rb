@@ -34,7 +34,6 @@ class DashboardsController < ApplicationController
 
     # Prepare data for Chartkick
     @yelp_reviews_by_month = calculate_reviews_by_month(@yelp_reviews)
-
     # Set up the data for Chartkick
     # @reviews_chart_data = {
     #   "Yelp Reviews" => @yelp_reviews_by_month
@@ -119,6 +118,5 @@ class DashboardsController < ApplicationController
       cumulative_reviews_count += reviews_count
     end
   end
-
 
 end
