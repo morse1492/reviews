@@ -1,0 +1,54 @@
+<div class="container mt-5">
+  <h2>Analytics</h2>
+
+  <div class="container mt-5">
+    <div class="row mt-5">
+      <div class="col-md-3">
+        <h3><span class="badge bg-primary">Total Reviews: <%= @total_reviews_count %></span> ⭐</h3>
+      </div>
+      <div class="col-md-3">
+        <h3><span class="badge bg-danger">Negative Reviews: <%= @negative_reviews_count %></span> 😟</h3>
+      </div>
+      <div class="col-md-3">
+        <h3><span class="badge bg-success">Positive Reviews: <%= @positive_reviews_count %></span> 😊</h3>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mt-5">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header"><img src="https://upload.wikimedia.org/wikipedia/commons/2/2d/Google-favicon-2015.png" alt="Google logo" class="mb-1" style="width: 17px;"> <strong> Google Reviews Over Time </strong></div>
+        <div class="card-body">
+          <%= line_chart @google_reviews_by_month, ytitle: "Number of Reviews", xtitle: "Month", library: { animation: { duration: 1000, easing: 'easeOutQuad' } } %>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header"><img src="https://besticon-demo.herokuapp.com/icon?url=yelp.com&size=80..120..200" alt="Yelp logo" class="mb-1" style="width: 17px;"> <strong> Yelp Reviews Over Time</strong></div>
+        <div class="card-body">
+          <%= line_chart @yelp_reviews_by_month, ytitle: "Number of Reviews", xtitle: "Month", library: { animation: { duration: 1000, easing: 'easeOutQuad' } } %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mt-5">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">Review Counts</div>
+        <div class="card-body">
+          <%= bar_chart ({ "Google Reviews" => @google_reviews_count, "Yelp Reviews" => @yelp_reviews_count }), ytitle: "Number of Reviews", library: { animation: { duration: 1000, easing: 'easeOutQuad' } } %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mt-5">
+    <div class="col-md-12">
+      <%= link_to "Back to Dashboard", root_path, class: "btn btn-primary" %>
+    </div>
+  </div>
+</div>
