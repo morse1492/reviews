@@ -21,6 +21,7 @@ class DashboardsController < ApplicationController
     google_api_key = ENV['GOOGLE_API_KEY'] # Use the environment variable for the API key
     @google_reviews = fetch_google_reviews(google_api_key, @business.google_place_id) if @business.google_place_id
 
+
     # Calculate the average rating for Google Reviews
     calculate_average_rating
 
@@ -118,7 +119,6 @@ class DashboardsController < ApplicationController
       cumulative_reviews_count += reviews_count
     end
   end
-
 
 
 end

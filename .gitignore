@@ -35,6 +35,7 @@
 /config/master.key
 
 # .gitignore
-/config/env.rb
+
+.env
 
 /node_modules
