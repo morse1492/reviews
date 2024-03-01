@@ -84,17 +84,21 @@
     </div>
   </div>
 
-  <!-- Review Analytics Section -->
-  <div class="row mt-5 mb-3">
-    <div class="col-12">
-      <div class="card">
-        <div class="card-header">Reviews Over Time</div>
-        <div class="card-body">
-          <%= line_chart @yelp_reviews_by_month, ytitle: "Rating", xtitle: "Month", library: { animation: { duration: 1000, easing: 'easeOutQuad' } } %>
-        </div>
+<!-- Review Analytics Section -->
+<div class="row mt-5 mb-3">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header">Reviews Over Time</div>
+      <div class="card-body">
+        <%= line_chart @yelp_reviews_by_month, ytitle: "Rating", xtitle: "Month", library: { animation: { duration: 1000, easing: 'easeOutQuad' } } %>
+      </div>
+      <div class="card-footer">
+        <%= link_to 'See More Analytics', analytics_path, class: 'btn btn-primary' %>
       </div>
     </div>
   </div>
+</div>
+
 
   <!-- Google Business Reviews Section -->
   <div class="row mt-5 mb-3">
