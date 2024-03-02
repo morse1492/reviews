@@ -1,16 +1,16 @@
 <div class="container mt-5">
-  <h2>Analytics</h2>
+  <h1>Review Analytics</h1>
 
   <div class="container mt-5">
     <div class="row mt-5">
       <div class="col-md-3">
-        <h3><span class="badge bg-primary">Total Reviews: <%= @total_reviews_count %></span> ⭐</h3>
+        <h3><span class="badge bg-primary">⭐ Total Reviews: <%= @total_reviews_count %></span></h3>
       </div>
       <div class="col-md-3">
-        <h3><span class="badge bg-danger">Negative Reviews: <%= @negative_reviews_count %></span> 😟</h3>
+        <h3><span class="badge bg-danger">😟 Negative Reviews: <%= @negative_reviews_count %></span></h3>
       </div>
       <div class="col-md-3">
-        <h3><span class="badge bg-success">Positive Reviews: <%= @positive_reviews_count %></span> 😊</h3>
+        <h3><span class="badge bg-success">😊 Positive Reviews: <%= @positive_reviews_count %></span></h3>
       </div>
     </div>
   </div>
@@ -35,16 +35,28 @@
     </div>
   </div>
 
-  <div class="row mt-5">
-    <div class="col-md-12">
-      <div class="card">
-        <div class="card-header">Review Counts</div>
-        <div class="card-body">
-          <%= bar_chart ({ "Google Reviews" => @google_reviews_count, "Yelp Reviews" => @yelp_reviews_count }), ytitle: "Number of Reviews", library: { animation: { duration: 1000, easing: 'easeOutQuad' } } %>
-        </div>
+<div class="row mt-5 mb-3">
+  <!-- Review Counts Bar Chart -->
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-header">Review Counts</div>
+      <div class="card-body">
+        <%= bar_chart ({ "Google Reviews" => @google_reviews_count, "Yelp Reviews" => @yelp_reviews_count }), ytitle: "Number of Reviews", library: { animation: { duration: 1000, easing: 'easeOutQuad' } } %>
       </div>
     </div>
   </div>
+
+  <!-- Review Ratings Distribution Pie Chart -->
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-header">Review Ratings Distribution</div>
+      <div class="card-body">
+        <%= pie_chart @yelp_reviews_by_rating, library: { animation: { duration: 1000, easing: 'easeOutQuad' } } %>
+      </div>
+    </div>
+  </div>
+</div>
+
 
   <div class="row mt-5">
     <div class="col-md-12">
