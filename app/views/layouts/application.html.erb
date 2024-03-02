@@ -16,7 +16,7 @@
 <body>
   <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#"><strong>⭐ReviewMe</strong></a>
+      <a class="navbar-brand" href="#"><strong>⭐ReviewMe</strong><span style="font-size: 0.8em;">&#8482;</span></a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -54,5 +54,22 @@
   <div class="container mt-4">
     <%= yield %>
   </div>
+   <!-- Footer Section -->
+<footer class="footer mt-auto py-3 bg-primary text-light">
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <span>&copy; 2024 <strong>⭐ReviewMe</strong><span style="font-size: 0.8em;">&#8482;</span> All rights reserved.</span>
+      </div>
+      <div class="col text-end">
+        <ul class="list-inline">
+          <li class="list-inline-item"><%= link_to 'Dashboard', root_path, class: 'footer-link text-light' %></li>
+          <li class="list-inline-item"><%= link_to 'Analytics', analytics_path, class: 'footer-link text-light' %></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</footer>
+
 </body>
 </html>
