@@ -29,7 +29,7 @@ class CampaignsController < ApplicationController
 
   def update
     if @campaign.update(campaign_params)
-      redirect_to campaigns_path, notice: 'Campaign updated successfully.'
+      redirect_to business_campaign_path, notice: 'Campaign updated successfully.'
     else
       render :edit
     end
@@ -37,7 +37,7 @@ class CampaignsController < ApplicationController
 
   def destroy
     @campaign.destroy
-    redirect_to campaigns_path, notice: 'Campaign deleted successfully.'
+    redirect_to business_campaign_path, notice: 'Campaign deleted successfully.'
   end
 
   private
