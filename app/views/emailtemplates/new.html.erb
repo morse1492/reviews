@@ -6,13 +6,13 @@
   <%= f.input :subjectline, label: "Heading", placeholder: 'Your feedback improves our service' %>
   <%= f.input :content, label: "Message", placeholder: "Thank you for choosing us, Would you kindly take a moment to review us?", as: :text, input_html: { rows: 2 } %>
 
-<h3>feedback page</h3>
+<h3>Feedback template</h3>
 <%= radio_button_tag 'template', 'Feedback', false %>
     <%= f.input :subjectline, label: "Heading", input_html: { value: 'Sorry to hear that!' }  %>
     <%= f.input :content, label: "Message", input_html: { row: 3, value: "Please leave your experience about it." }, as: :text %>
 
 
-<h3>Thank you page</h3>
+<h3>Thank you template</h3>
 <%= radio_button_tag 'template', 'Thank_you', false %>
     <%= f.input :subjectline, label: "Heading", input_html: { value: 'Thank you!' }  %>
     <%= f.input :content, label: "Message", input_html: { rows: 3, value: "It is great to hear that! Please leave us your feedback." }, as: :text %>
