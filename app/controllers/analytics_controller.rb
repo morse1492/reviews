@@ -2,25 +2,19 @@ class AnalyticsController < ApplicationController
   before_action :authenticate_user!
 
   def index
-
     @business = current_user.business
     @reviews = @business.reviews
     @campaigns = @business.campaigns
-    @email_templates = @business.emailtemplates
+    # @email_templates = @business.email_templates
 
-    # Fetch Google Business reviews using the Google Places API
-    google_api_key = ENV['GOOGLE_API_KEY'] # Use the environment variable for the API key
+    google_api_key = ENV['GOOGLE_API_KEY']
     @google_reviews = fetch_google_reviews(google_api_key, @business.google_place_id) if @business.google_place_id
 
-    # # Calculate the average rating for Google Reviews
-    # calculate_average_rating
+    calculate_average_rating
 
-    # Fetch Yelp reviews
-    yelp_api_key = ENV['YELP_API_KEY'] # Use the environment variable for the Yelp API key
+    yelp_api_key = ENV['YELP_API_KEY']
     @yelp_reviews = fetch_yelp_reviews(yelp_api_key, @business.yelp_business_id) if @business.yelp_business_id
 
-    # # Calculate the average rating for Yelp reviews
-    # calculate_yelp_average_rating
 
     # Prepare data for Chartkick
     @google_reviews_by_month = calculate_google_reviews_by_month(@google_reviews)
@@ -34,6 +28,17 @@ class AnalyticsController < ApplicationController
     @total_reviews_count = calculate_total_reviews_count
     @negative_reviews_count = calculate_negative_reviews_count
     @positive_reviews_count = calculate_positive_reviews_count
+
+    calculate_yelp_average_rating
+
+    # Prepare data for Chartkick
+    @yelp_reviews_by_month = calculate_reviews_by_month(@yelp_reviews)
+
+    # Prepare data for pie chart
+    @yelp_reviews_by_rating = @yelp_reviews.each_with_object(Hash.new(0)) do |review, counts|
+      counts["#{review["rating"]} stars"] += 1
+    end
+
   end
 
   private
@@ -115,4 +120,36 @@ class AnalyticsController < ApplicationController
     (@google_reviews.try(:count) { |review| review["rating"] > 3 } || 0) +
       (@yelp_reviews.try(:count) { |review| review["rating"] > 3 } || 0)
   end
+
+  def calculate_average_rating
+    if @google_reviews.present? && @google_reviews.any? { |review| review["rating"].present? }
+      total_rating = @google_reviews.sum { |review| review["rating"].to_f }
+      @average_rating = (total_rating / @google_reviews.size).round(2)
+    else
+      @average_rating = nil
+    end
+  end
+
+  def calculate_yelp_average_rating
+    if @yelp_reviews.present? && @yelp_reviews.any? { |review| review["rating"].present? }
+      total_yelp_rating = @yelp_reviews.sum { |review| review["rating"].to_f }
+      @yelp_average_rating = (total_yelp_rating / @yelp_reviews.size).round(2)
+    else
+      @yelp_average_rating = nil
+    end
+  end
+
+  def calculate_reviews_by_month(reviews)
+
+    reviews_by_month = reviews.group_by { |review| review["time_created"].to_date.beginning_of_month }
+    reviews_count_by_month = reviews_by_month.transform_values(&:count)
+
+    sorted_reviews_count = reviews_count_by_month.sort.to_h
+
+    cumulative_reviews_count = 0
+    cumulative_reviews_data = sorted_reviews_count.transform_values do |reviews_count|
+      cumulative_reviews_count += reviews_count
+    end
+  end
+
 end
