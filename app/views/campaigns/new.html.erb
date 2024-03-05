@@ -2,7 +2,15 @@
 
 <%= simple_form_for [@business, @campaign] do |f| %>
   <%= f.input :name %>
-  <%= f.input :name, label: "Send to Contacts", as: :select, collection: ['Sally','John'], include_blank: false %>
+  <%# <%= f.input :emailtemplate_id, label: "Select Template", as: :select, collection: Template.all.map { |t| [t.name, t.id] }, include_blank: "Select Template" %>
+  <%= f.association :emailtemplate, collection: @business.emailtemplates, label_method: :subjectline, required: false %>
+  <%# <p>Template</p> %>
+  <%# <%= simple_form_for :emailtemplate do |template_subform| %>
+    <%# <%= template_subform.input :subjectline, label: "Heading", input_html: { row: 1, placeholder: "Your feedback improves our service." }, as: :text%>
+    <%# <%= template_subform.input :content, label: "Message", input_html: { row: 3, placeholder: "Thank you for choosing us, Would you kindly take a moment to review us?" }, as: :text %>
+ <%# <% end %>
+
+  <%= f.input :recipient_list, label: "Recipient", as: :select, collection: [['Sally','Sally@example.com'],['John','John@inspection.com'],['Amar','Amar@inspection.com']], include_blank: false %>
   <%= link_to "Choose template", new_business_emailtemplate_path, class: "btn btn-primary"%>
   <%= f.submit "Submit campaign", class: "btn btn-primary" %>
 <% end %>

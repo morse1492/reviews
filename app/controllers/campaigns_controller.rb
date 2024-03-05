@@ -16,7 +16,11 @@ class CampaignsController < ApplicationController
   end
 
   def create
-    @campaign = current_user.business.campaigns.build(campaign_params)
+
+    @business = Business.find(params[:business_id])
+    # @campaign = current_user.business.campaigns.build(campaign_params)
+    @campaign = Campaign.new(campaign_params)
+    @campaign.business = @business
     if @campaign.save
       redirect_to root_path, notice: 'Campaign created successfully.'
     else
@@ -29,7 +33,7 @@ class CampaignsController < ApplicationController
 
   def update
     if @campaign.update(campaign_params)
-      redirect_to business_campaign_path, notice: 'Campaign updated successfully.'
+      redirect_to campaigns_path, notice: 'Campaign updated successfully.'
     else
       render :edit
     end
@@ -37,7 +41,7 @@ class CampaignsController < ApplicationController
 
   def destroy
     @campaign.destroy
-    redirect_to business_campaign_path, notice: 'Campaign deleted successfully.'
+    redirect_to campaigns_path, notice: 'Campaign deleted successfully.'
   end
 
   private
@@ -47,6 +51,6 @@ class CampaignsController < ApplicationController
   end
 
   def campaign_params
-    params.require(:campaign).permit(:name, :delaytime)
+    params.require(:campaign).permit(:name, :delaytime, :recipient_list, :emailtemplate_id)
   end
 end
