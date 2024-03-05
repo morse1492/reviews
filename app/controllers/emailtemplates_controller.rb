@@ -15,6 +15,7 @@ class EmailtemplatesController < ApplicationController
   end
 
   def create
+    raise
     @emailtemplate = current_user.business.emailtemplates.build(emailtemplate_params)
     if @emailtemplate.save
       redirect_to new_business_campaign_path, notice: 'Email template created successfully.'
