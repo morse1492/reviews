@@ -1,5 +1,8 @@
 # config/routes.rb
 Rails.application.routes.draw do
+  authenticate :user do
+    get '/reviews', to: 'reviews#index', as: 'reviews'
+  end
   get 'analytics/index'
   root to: 'dashboards#show'
   devise_for :users, controllers: {
@@ -7,7 +10,6 @@ Rails.application.routes.draw do
   }
 
   resources :businesses do
-    resources :reviews
     resources :emailtemplates
     resources :campaigns
   end

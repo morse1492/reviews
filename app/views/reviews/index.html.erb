@@ -1,26 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dashboard</title>
+  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload', defer: true %>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+
 <div class="container mt-5">
-  <h2>Reviews</h2>
-  <table class="table">
-    <thead>
-      <tr>
-        <th scope="col">Platform</th>
-        <th scope="col">Rating</th>
-        <th scope="col">Content</th>
-        <th scope="col">Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @reviews.each do |review| %>
-        <tr>
-          <td><%= review.platform %></td>
-          <td><%= review.rating %></td>
-          <td><%= review.content %></td>
-          <td>
-            <%= link_to 'Edit', edit_review_path(review), class: 'btn btn-primary btn-sm' %>
-            <%= link_to 'Respond', respond_review_path(review), class: 'btn btn-secondary btn-sm' %>
-          </td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
+  <h2><strong>Here are all of your reviews, <%= current_user.business.business_name %></strong></h2>
+
+  <!-- Combined Reviews Section -->
+  <div class="mt-5">
+    <% (@google_reviews + @yelp_reviews).each do |review| %>
+      <div class="card mb-3">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-sm-12">
+              <% if review.has_key?("author_name") %>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/2/2d/Google-favicon-2015.png" alt="Google logo" style="width: 20px;">
+                <span class="ml-2">Review by: <%= review["author_name"] %></span>
+              <% else %>
+                <img src="https://besticon-demo.herokuapp.com/icon?url=yelp.com&size=80..120..200" alt="Yelp logo" style="width: 20px;">
+                <span class="ml-2">Review by: <%= review["user"]["name"] %></span>
+              <% end %>
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-sm-12">
+              <h6 class="card-subtitle mb-3 text-muted">
+                <% rating = review["rating"].to_i %>
+                <% 5.times do |i| %>
+                  <% if i < rating %>
+                    <i class="fas fa-star text-warning"></i>
+                  <% else %>
+                    <i class="far fa-star text-warning"></i>
+                  <% end %>
+                <% end %>
+                <%= review["rating"] %> / 5
+              </h6>
+            </div>
+          </div>
+          <p class="card-text"><%= review["text"] || review["description"] %></p>
+          <footer class="blockquote-footer">
+            Reviewed on <%= review["time"] ? Time.at(review["time"]).strftime("%B %d, %Y") : Date.parse(review["time_created"]).strftime("%B %d, %Y") %>
+          </footer>
+          <button class="btn btn-primary" disabled>Respond</button>
+        </div>
+      </div>
+    <% end %>
+  </div>
 </div>
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>
