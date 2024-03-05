@@ -1,2 +1,48 @@
-<h1>Reviews#show</h1>
-<p>Find me in app/views/reviews/show.html.erb</p>
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Reviews Dashboard</title>
+  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload', defer: true %>
+</head>
+<body>
+<div class="container mt-5">
+  <h1>All Reviews</h1>
+
+  <div class="mt-4">
+    <h2>Google Reviews</h2>
+    <% if @google_reviews.present? %>
+      <% @google_reviews.each do |review| %>
+        <div class="review mb-4">
+          <p><strong>Reviewer:</strong> <%= review["author_name"] %></p>
+          <p><strong>Rating:</strong> <%= review["rating"] %> / 5</p>
+          <p><strong>Review:</strong> <%= review["text"] %></p>
+          <p><strong>Reviewed on:</strong> <%= Time.at(review["time"]).strftime("%B %d, %Y") %></p>
+          <%= button_to 'Respond', '#', method: :get, class: 'btn btn-primary', disabled: true %>
+        </div>
+      <% end %>
+    <% else %>
+      <p>No Google reviews found.</p>
+    <% end %>
+  </div>
+
+  <div class="mt-4">
+    <h2>Yelp Reviews</h2>
+    <% if @yelp_reviews.present? %>
+      <% @yelp_reviews.each do |review| %>
+        <div class="review mb-4">
+          <p><strong>Reviewer:</strong> <%= review["user"]["name"] %></p>
+          <p><strong>Rating:</strong> <%= review["rating"] %> / 5</p>
+          <p><strong>Review:</strong> <%= review["text"] %></p>
+          <p><strong>Reviewed on:</strong> <%= Date.parse(review["time_created"]).strftime("%B %d, %Y") %></p>
+          <%= button_to 'Respond', '#', method: :get, class: 'btn btn-primary', disabled: true %>
+        </div>
+      <% end %>
+    <% else %>
+      <p>No Yelp reviews found.</p>
+    <% end %>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,3 +1,10 @@
+<title>Dashboard</title>
+  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload', defer: true %>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+</head>
+<body>
+
 <div class="container mt-5">
   <h2>Welcome to Your Dashboard, <%= current_user.business.business_name %></h2>
 
@@ -16,27 +23,14 @@
             <div class="font-weight-bold">
               <%= @average_rating %> / 5
               <br>
-              <% if @average_rating %>
-              <% stars = (@average_rating * 2).round / 2.0 rescue nil %> <!-- Round to nearest half-star -->
-              <% if stars %>
-                <% full_stars = stars.floor %>
-                <% half_star = (stars - full_stars).zero? ? nil : 1 %>
-                <% empty_stars = 5 - full_stars - (half_star || 0) %>
-                <% full_stars.times do %>
-                  <i class="fas fa-star text-warning"></i>
-                <% end %>
-                <% if half_star %>
-                  <i class="fas fa-star-half-alt text-warning"></i>
-                <% end %>
-                <% empty_stars.times do %>
-                  <i class="far fa-star text-warning"></i>
-                <% end %>
-              <% else %>
-                <p>No ratings available</p>
+              <% full_stars = @average_rating.floor %>
+              <% half_star = (@average_rating - full_stars >= 0.5) ? 1 : 0 %>
+              <% empty_stars = 5 - full_stars - half_star %>
+              <% full_stars.times { concat(tag.i('', class: 'fas fa-star text-warning')) } %>
+              <% if half_star > 0 %>
+                <%= tag.i('', class: 'fas fa-star-half-alt text-warning') %>
               <% end %>
-              <% else %>
-                <p>No ratings available</p>
-              <% end %>
+              <% empty_stars.times { concat(tag.i('', class: 'far fa-star text-warning')) } %>
               <br>
               Based on <%= @google_reviews.size %> reviews
             </div>
@@ -58,21 +52,16 @@
           <h5>Average Yelp Rating</h5>
           <% if @yelp_average_rating %>
             <div class="font-weight-bold">
-              <strong><%= @yelp_average_rating %> / 5</strong>
+              <%= @yelp_average_rating %> / 5
               <br>
-              <% stars = (@yelp_average_rating * 2).round / 2.0 %> <!-- Round to nearest half-star -->
-              <% full_stars = stars.floor %>
-              <% half_star = (stars - full_stars).zero? ? nil : 1 %>
-              <% empty_stars = 5 - full_stars - half_star %>
-              <% full_stars.times do %>
-                <i class="fas fa-star text-warning"></i>
+              <% stars = @yelp_average_rating.floor %>
+              <% half_star = (@yelp_average_rating - stars >= 0.5) ? 1 : 0 %>
+              <% empty_stars = 5 - stars - half_star %>
+              <% stars.times { concat(tag.i('', class: 'fas fa-star text-warning')) } %>
+              <% if half_star > 0 %>
+                <%= tag.i('', class: 'fas fa-star-half-alt text-warning') %>
               <% end %>
-              <% if half_star %>
-                <i class="fas fa-star-half-alt text-warning"></i>
-              <% end %>
-              <% empty_stars.times do %>
-                <i class="far fa-star text-warning"></i>
-              <% end %>
+              <% empty_stars.times { concat(tag.i('', class: 'far fa-star text-warning')) } %>
               <br>
               Based on <%= @yelp_reviews.size %> reviews
             </div>
@@ -83,6 +72,7 @@
       </div>
     </div>
   </div>
+
 
 <!-- Review Analytics Section -->
 <div class="row mt-5 mb-3">
