@@ -26,11 +26,14 @@
             <%= link_to 'Analytics', analytics_path, class: 'nav-link' %>
           </li>
           <li class="nav-item">
-            <%= link_to 'Dashboard', root_path, class: 'nav-link' %> <!-- Assuming your dashboard is at root_path -->
+            <%= link_to 'Dashboard', root_path, class: 'nav-link' %>
           </li>
-          <!-- Placeholder for 'Create Campaign' - adjust according to your routes -->
           <li class="nav-item">
             <%= link_to 'Create Campaign', '#' , class: 'nav-link' %>
+          </li>
+          <!-- Added Reviews link -->
+          <li class="nav-item">
+            <%= link_to 'Reviews', '/reviews', class: 'nav-link' %>
           </li>
         </ul>
         <ul class="navbar-nav ms-auto">
@@ -50,6 +53,7 @@
       </div>
     </div>
   </nav>
+
 
   <div class="container mt-4">
     <%= yield %>
