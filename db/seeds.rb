@@ -5,6 +5,7 @@ Business.destroy_all
 Emailtemplate.destroy_all
 Campaign.destroy_all
 
+
 # Create a Business
 business = Business.create!(
   business_name: "Designer Pet Portraits",
@@ -12,20 +13,29 @@ business = Business.create!(
   email: "business@example.com"
 )
 
+# Create a User
+user = User.create!(
+  email: "user@example.com",
+  password: "password",
+  password_confirmation: "password",
+  business: business
+)
+
+
 emailtemplates = [
   {
-    content: "It is great to hear that! Please leave us your feedback.",
     subjectline: "Thank you!",
+    content: "It is great to hear that! Please leave us your feedback.",
     template_name: "Thank_you"
   },
   {
-    content: "Please leave your experience about it.",
     subjectline: "Sorry to hear that!",
+    content: "Please leave your experience about it.",
     template_name: "Feedback"
   },
   {
-    content: "",
     subjectline: "",
+    content: "",
     template_name: "New"
   }
 ]
@@ -43,16 +53,10 @@ campaign = Campaign.create!(
   name: "Test- campaign",
   business_id: business.id,
   emailtemplate_id: Emailtemplate.order("RANDOM()").limit(1).first.id,
-  recipient_list: "John"
+  recipient_list: "John@example.com"
 )
 
-# Create a User
-user = User.create!(
-  email: "user@example.com",
-  password: "password",
-  password_confirmation: "password",
-  business: business
-)
+
 
 # Create Reviews
 30.times do |i|
