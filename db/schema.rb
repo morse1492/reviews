@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_03_02_110528) do
+ActiveRecord::Schema[7.0].define(version: 2024_03_09_003438) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -43,6 +43,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_02_110528) do
     t.bigint "business_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "template_name"
     t.index ["business_id"], name: "index_emailtemplates_on_business_id"
   end
 
