@@ -1,3 +1,5 @@
+require 'openai'
+
 class ReviewsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_business
@@ -8,6 +10,13 @@ class ReviewsController < ApplicationController
 
     @google_reviews = fetch_google_reviews(ENV['GOOGLE_API_KEY'], @business.google_place_id) if @business.google_place_id.present?
     @yelp_reviews = fetch_yelp_reviews(ENV['YELP_API_KEY'], @business.yelp_business_id) if @business.yelp_business_id.present?
+  end
+
+  def generate_response
+    review_content = params[:review_content]
+    generated_response = generate_response_with_openai(review_content)
+    render json: { response: generated_response }
+    # return head :ok
   end
 
   # Placeholder actions for responding to reviews
@@ -77,4 +86,24 @@ class ReviewsController < ApplicationController
     []
   end
 
+  def generate_response_with_openai(review_content)
+    client = OpenAI::Client.new
+
+    chat_response = client.chat(
+      parameters: {
+        model: 'gpt-3.5-turbo',
+        messages: [
+          {
+            role: 'user',
+            content: "please respond to this review in a professional manner: #{review_content}"
+          }
+        ],
+        temperature: 0.7
+      }
+    )
+    chat_response['choices'][0]['message']['content']
+    # rescue => e
+    #   puts e.message
+    #   "Error generating response."
+  end
 end
