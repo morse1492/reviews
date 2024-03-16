@@ -1,28 +1,54 @@
 import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
-  static values = { reviewContent: String };
-
-  generateResponse() {
-    console.log("test");
-
+  generateResponse(event) {
+    console.log("Fetching AI response...");
     const csrfToken = document.querySelector("[name='csrf-token']").content;
+    const button = event.currentTarget;
+    const cardBody = button.closest(".card-body");
 
     fetch(`/reviews/generate_response`, {
-      method: "POST", // *GET, POST, PUT, DELETE, etc.
-      mode: "cors", // no-cors, *cors, same-origin
-      cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-      credentials: "same-origin", // include, *same-origin, omit
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
         "X-CSRF-Token": csrfToken,
       },
-      body: JSON.stringify({ review_content: "very nice restaurant" }), // body data type must match "Content-Type" header
+      body: JSON.stringify({
+        review_content: "respond to review in a nice manner",
+      }), // Adjust as necessary
     })
       .then((response) => response.json())
       .then((data) => {
-        const responseElement = document.getElementById("aiResponse");
-        responseElement.innerHTML = data.response; // Adjust based on actual response structure
+        let responseContainer = cardBody.querySelector(".aiResponse");
+        if (!responseContainer) {
+          const heading = document.createElement("h6");
+          heading.className = "mt-3";
+          heading.textContent = "ChatGPT Response:";
+
+          responseContainer = document.createElement("div");
+          responseContainer.className = "aiResponse alert alert-success mt-2";
+
+          cardBody.appendChild(heading);
+          cardBody.appendChild(responseContainer);
+        }
+        responseContainer.style.display = "block"; // Make sure to show the response container
+        this.displayResponseWordByWord(data.response, responseContainer);
       });
+  }
+
+  displayResponseWordByWord(response, element) {
+    element.innerHTML = ""; // Clear previous content
+    const words = response.split(" ");
+    let index = 0;
+
+    const addWord = () => {
+      if (index < words.length) {
+        element.innerHTML += `${words[index]} `;
+        index++;
+        setTimeout(addWord, 100); // Adjust speed as necessary
+      }
+    };
+
+    addWord();
   }
 }
