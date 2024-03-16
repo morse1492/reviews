@@ -14,21 +14,34 @@ export default class extends Controller {
         "X-CSRF-Token": csrfToken,
       },
       body: JSON.stringify({
-        review_content: "respond to review in a nice manner",
+        review_content:
+          "respond to review but make each response unique with some humor",
       }), // Adjust as necessary
     })
       .then((response) => response.json())
       .then((data) => {
         let responseContainer = cardBody.querySelector(".aiResponse");
         if (!responseContainer) {
+          const headingContainer = document.createElement("div");
+          headingContainer.className = "d-flex align-items-center mt-3";
+
+          const logo = document.createElement("img");
+          logo.src =
+            "https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg"; // Replace URL_TO_CHATGPT_LOGO with the actual URL to the ChatGPT logo
+          logo.alt = "ChatGPT Logo";
+          logo.style.width = "24px"; // Set the logo size as desired
+          logo.style.marginRight = "10px";
+
           const heading = document.createElement("h6");
-          heading.className = "mt-3";
           heading.textContent = "ChatGPT Response:";
+
+          headingContainer.appendChild(logo);
+          headingContainer.appendChild(heading);
 
           responseContainer = document.createElement("div");
           responseContainer.className = "aiResponse alert alert-success mt-2";
 
-          cardBody.appendChild(heading);
+          cardBody.appendChild(headingContainer);
           cardBody.appendChild(responseContainer);
         }
         responseContainer.style.display = "block"; // Make sure to show the response container
