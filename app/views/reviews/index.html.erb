@@ -49,9 +49,10 @@
             Reviewed on <%= review["time"] ? Time.at(review["time"]).strftime("%B %d, %Y") : Date.parse(review["time_created"]).strftime("%B %d, %Y") %>
           </footer>
           <!-- Generate Response Button -->
-          <%= form_with do |form| %>
-            <%= button_to 'Generate response', data: { controller: "review-response", action: "review-response#generateResponse" } %>
+          <%= button_tag type: 'button', data: { controller: "review-response", action: "click->review-response#generateResponse" } do %>
+            Generate Response
           <% end %>
+          <div id="aiResponse"></div>
         </div>
       </div>
     <% end %>

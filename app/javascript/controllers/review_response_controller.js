@@ -17,11 +17,12 @@ export default class extends Controller {
         "Content-Type": "application/json",
         "X-CSRF-Token": csrfToken,
       },
-      body: JSON.stringify({ review: "very nice restaurant" }), // body data type must match "Content-Type" header
+      body: JSON.stringify({ review_content: "very nice restaurant" }), // body data type must match "Content-Type" header
     })
       .then((response) => response.json())
       .then((data) => {
-        alert(data.message);
+        const responseElement = document.getElementById("aiResponse");
+        responseElement.innerHTML = data.response; // Adjust based on actual response structure
       });
   }
 }
