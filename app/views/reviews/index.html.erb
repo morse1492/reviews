@@ -6,6 +6,7 @@
   <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload', defer: true %>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <meta name="csrf-token" content="<%= form_authenticity_token %>">
 </head>
 <body>
 
@@ -47,10 +48,11 @@
           <footer class="blockquote-footer">
             Reviewed on <%= review["time"] ? Time.at(review["time"]).strftime("%B %d, %Y") : Date.parse(review["time_created"]).strftime("%B %d, %Y") %>
           </footer>
-          <button class="btn btn-primary" disabled>Respond</button>
+          <%= button_tag 'Generate Response', type: 'button', class: 'btn btn-primary', data: { controller: "review-response", action: "click->review-response#generateResponse" } %>
         </div>
       </div>
     <% end %>
+    <div id="aiResponse" class="alert alert-success mt-3" style="display: none;"></div>
   </div>
 </div>
 

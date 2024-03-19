@@ -35,6 +35,9 @@ gem "devise"
 
 gem 'groupdate'
 
+gem 'ruby-openai'
+
+
 gem 'chartkick'
 
 gem 'google-business-reviews'
